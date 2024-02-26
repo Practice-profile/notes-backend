@@ -5,13 +5,11 @@ import { useNavigate } from 'react-router-dom'
 
 const Notes = () => {
     const context = useContext(NoteContext)
-    const { notes, getNotes, updateNote, setNotes } = context
+    const { notes, getNotes, updateNote } = context
     const ref = useRef(null)
     const closeRef = useRef(null)
     const [newNote, setNewNote] = useState({id: "", e_title: "", e_description: "", e_tag: ""}) 
     let navigate = useNavigate()
-
-    // const trigger = newNote
 
     useEffect(() => {
         const fetchData = async ()=>{
@@ -23,20 +21,17 @@ const Notes = () => {
             }
         }
         fetchData()
-        // console.log(notes)
         // eslint-disable-next-line
     }, [])
         
     const editNote = (currentNote) => {
         ref.current.click()
         setNewNote({id: currentNote._id, e_title: currentNote.title, e_description: currentNote.description, e_tag: currentNote.tag})
-        // setNotes({id: currentNote._id, e_title: currentNote.title, e_description: currentNote.description, e_tag: currentNote.tag})
     }
 
     const saveChanges = async (e)=>{
         e.preventDefault()
-        const updatedNotes = await updateNote(newNote)
-        console.log(updatedNotes)
+        await updateNote(newNote)
         closeRef.current.click()
         
     }
