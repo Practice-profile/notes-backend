@@ -74,17 +74,16 @@ const NoteState = (props) => {
         })
         
         const data = await response.json()
+        // console.log(data)
         
-        
-        setNotes((notes)=>{
-            for(let i=0; i<notes.length; i++){
-                let element = notes[i]
-                if(element._id === note._id){
-                    element = data
-                }
+        setNotes((prevNotes)=> prevNotes.map((prevNote)=>{
+            if(prevNote._id === data._id){
+                return data
             }
-            return notes
-        })
+            else{
+                return prevNote
+            }
+        }))
         getAlert("success", "Note successfully updated")
     }
 

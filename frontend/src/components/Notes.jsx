@@ -5,34 +5,38 @@ import { useNavigate } from 'react-router-dom'
 
 const Notes = () => {
     const context = useContext(NoteContext)
-    const { notes, getNotes, updateNote } = context
+    const { notes, getNotes, updateNote, setNotes } = context
     const ref = useRef(null)
     const closeRef = useRef(null)
     const [newNote, setNewNote] = useState({id: "", e_title: "", e_description: "", e_tag: ""}) 
     let navigate = useNavigate()
 
+    // const trigger = newNote
+
     useEffect(() => {
         const fetchData = async ()=>{
             if(localStorage.getItem('token')){
                 await getNotes()
-                console.log(notes)
             }
             else{
                 navigate('/login')
             }
         }
         fetchData()
+        // console.log(notes)
         // eslint-disable-next-line
     }, [])
         
     const editNote = (currentNote) => {
         ref.current.click()
         setNewNote({id: currentNote._id, e_title: currentNote.title, e_description: currentNote.description, e_tag: currentNote.tag})
+        // setNotes({id: currentNote._id, e_title: currentNote.title, e_description: currentNote.description, e_tag: currentNote.tag})
     }
 
-    const saveChanges = (e)=>{
-        // e.preventDefault()
-        updateNote(newNote)
+    const saveChanges = async (e)=>{
+        e.preventDefault()
+        const updatedNotes = await updateNote(newNote)
+        console.log(updatedNotes)
         closeRef.current.click()
         
     }
@@ -61,7 +65,7 @@ const Notes = () => {
                                     <input type="text" className="form-control" id="e_title" name="e_title" aria-describedby="e_title" value={newNote.e_title} onChange={onChange} />
                                 </div>
                                 <div className="mb-3">
-                                <textarea className="form-control" id="description"  name="description" value={newNote.description} onChange={onChange} style={{height: '130px'}}></textarea>
+                                <textarea className="form-control" id="description"  name="description" value={newNote.e_description} onChange={onChange} style={{height: '130px'}}></textarea>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="e_tag" className="form-label">Tag</label>
