@@ -5,7 +5,7 @@ require('dotenv').config()
 const app = express()
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({origin: "https://varuns-notebook.netlify.app/"}))
 
 const connectDb = async()=>{
     await mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
